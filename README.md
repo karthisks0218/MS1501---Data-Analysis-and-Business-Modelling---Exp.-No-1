@@ -71,10 +71,130 @@ analysis for data-cleaning and preprocessing purposes.
   `df.columns`              Lists column names in the DataFrame.  
 
 ## Program & Output
-<< Enter your code and the corresponding screenshot of the output in this section>>
 
+# Step 1: Import Essential Libraries
+import pandas as pd
+import numpy as np
 
+# Step 2: Load the Dataset
+df = pd.read_csv('heartdisease.csv')
+
+print("HEART DISEASE DATASET")
+display(df)
+
+# Step 3: View Dataset Structure and Information
+print("\nDATASET INFORMATION")
+df.info()
+
+print("\nDataset Shape:", df.shape)
+print("\nColumn Names:")
+print(df.columns)
+
+print("\nData Types:")
+print(df.dtypes)
+
+# Step 4: Display First and Last Five Records
+print("\nFIRST FIVE RECORDS")
+display(df.head())
+
+print("\nLAST FIVE RECORDS")
+display(df.tail())
+
+# Step 5: Check Missing Values
+print("\nMISSING VALUES")
+print(df.isnull().sum())
+
+print("\nTotal Missing Values:", df.isnull().sum().sum())
+
+# Step 6: Check and Remove Duplicate Records
+print("\nDUPLICATE RECORDS:", df.duplicated().sum())
+
+df = df.drop_duplicates()
+
+print("Shape After Removing Duplicates:", df.shape)
+
+# Step 7: Statistical Analysis
+print("\nSTATISTICAL SUMMARY")
+display(df.describe())
+
+print("\nMEAN VALUES")
+display(df.mean(numeric_only=True))
+
+print("\nMEDIAN VALUES")
+display(df.median(numeric_only=True))
+
+# Step 8: Handle Missing Values
+numeric_columns = df.select_dtypes(include=np.number).columns
+
+for col in numeric_columns:
+    if df[col].isnull().any():
+        df[col] = df[col].fillna(df[col].median())
+
+categorical_columns = df.select_dtypes(exclude=np.number).columns
+
+for col in categorical_columns:
+    if df[col].isnull().any():
+        df[col] = df[col].fillna(df[col].mode()[0])
+
+print("\nMISSING VALUES AFTER CLEANING")
+print(df.isnull().sum())
+
+# Step 9: Sort the Dataset
+if 'age' in df.columns:
+    sorted_df = df.sort_values(by='age', ascending=True)
+    print("\nDATASET SORTED BY AGE")
+    display(sorted_df.head(10))
+
+# Step 10: Group the Dataset
+if 'sex' in df.columns:
+    print("\nMEAN VALUES GROUPED BY GENDER")
+    display(df.groupby('sex').mean(numeric_only=True))
+
+  print("\nMAXIMUM VALUES GROUPED BY GENDER")
+    display(df.groupby('sex').max(numeric_only=True))
+
+  print("\nMINIMUM VALUES GROUPED BY GENDER")
+    display(df.groupby('sex').min(numeric_only=True))
+
+# Step 11: Rename Columns
+rename_columns = {}
+
+if 'cp' in df.columns:
+    rename_columns['cp'] = 'chest_pain_type'
+
+if 'thalach' in df.columns:
+    rename_columns['thalach'] = 'maximum_heart_rate'
+
+df = df.rename(columns=rename_columns)
+
+print("\nUPDATED COLUMN NAMES")
+print(df.columns)
+
+# Step 12: Final Dataset Verification
+print("\nFINAL DATASET INFORMATION")
+df.info()
+
+print("\nFINAL DATASET SHAPE")
+print(df.shape)
+
+print("\nREMAINING MISSING VALUES")
+print(df.isnull().sum().sum())
+
+print("\nREMAINING DUPLICATE RECORDS")
+print(df.duplicated().sum())
+
+print("\nCLEANED DATASET")
+display(df.head())
+
+# Step 13: Save the Cleaned Dataset
+df.to_csv('cleaned_heartdisease.csv', index=False)
+
+print("\nCleaned dataset successfully saved as cleaned_heartdisease.csv")
+
+# Output
+
+<img width="1920" height="5129" alt="image" src="https://github.com/user-attachments/assets/9ee462bc-80ed-4eb0-ab69-07816259695d" />
 
 ## Result
 
-<< Enter the program execution result>>
+The data cleaning and preprocessing experiment was successfully performed using Python and Pandas. The dataset was analysed, cleaned, sorted, grouped, and saved as a cleaned CSV file for further analysis.
